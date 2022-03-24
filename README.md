@@ -146,5 +146,33 @@ type: kubernetes.io/tls
 data:
   tls.crt: {{ .certificate }}
   tls.key: {{ .key }}
----
+
 {{- end }}
+
+
+
+
+## Named Templates
+
+
+
+One popular naming convention is to prefix each defined template with the name of the chart: {{ define "mychart.labels" }}. By using the specific chart name as a prefix we can avoid any conflicts that may arise due to two different charts that implement templates of the same name.
+
+### Partials and _ files
+
+Before we get to the nuts-and-bolts of writing those templates, there is file naming convention that deserves mention:
+
+Most files in templates/ are treated as if they contain Kubernetes manifests
+The NOTES.txt is one exception
+But files whose name begins with an underscore (_) are assumed to not have a manifest inside. These files are not rendered to Kubernetes object definitions, but are available everywhere within other chart templates for use.
+
+
+## Declaring and using templates with define and template
+
+The define action allows us to create a named template inside of a template file:
+
+```
+{{ define "MY.NAME" }}
+  # body of template here
+{{ end }}
+```
