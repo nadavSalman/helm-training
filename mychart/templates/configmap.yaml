@@ -1,8 +1,15 @@
 {{ $myDict := dict "name1" "value1" "name2" "value2" "name3" "value 3" }}
+{{- define "mychart.sugar.types"}}
+  sugarTypes: |-
+    - "brown"
+    - "white"
+{{- end }}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-configmap
+  {{- template "mychart.labels" . }}
 data:
   myvalue: "Hello World"
   {{- $relname := .Release.Name -}}
@@ -22,4 +29,5 @@ data:
   {{- range $key, $val := .Values.favorite }}
   {{ $key }}: {{ $val | quote }}
   {{- end }}
+  {{- template "mychart.sugar.types" }}
   

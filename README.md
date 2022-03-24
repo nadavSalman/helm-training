@@ -204,3 +204,43 @@ data:
   {{ $key }}: {{ $val | quote }}
   {{- end }}
 ```
+
+## Named and Templates
+
+documentation : ```{{/* ... */}}```
+_helpers.tpl
+```
+{{/* Generate basic labels */}}
+{{- define "mychart.labels" }}
+  labels:
+    generator: helm
+    date: {{ now | htmlDate }}
+{{- end }}
+```
+
+Even though this definition is in _helpers.tpl, it can still be accessed in configmap.yaml:
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  {{- template "mychart.labels" }}
+data:
+  myvalue: "Hello World"
+  {{- range $key, $val := .Values.favorite }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
+```
+
+### Setting the scope of a template
+ ```{{- template "mychart.labels" }}```
+ No scope was passed in, so within the template we cannot access anything in .. This is easy 
+ enough to fix, though. We simply pass a scope to the template:
+ ```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  {{- template "mychart.labels" . }}
+ ```
