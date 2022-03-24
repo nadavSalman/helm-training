@@ -167,7 +167,7 @@ The NOTES.txt is one exception
 But files whose name begins with an underscore (_) are assumed to not have a manifest inside. These files are not rendered to Kubernetes object definitions, but are available everywhere within other chart templates for use.
 
 
-## Declaring and using templates with define and template
+### Declaring and using templates with define and template
 
 The define action allows us to create a named template inside of a template file:
 
@@ -175,4 +175,32 @@ The define action allows us to create a named template inside of a template file
 {{ define "MY.NAME" }}
   # body of template here
 {{ end }}
+```
+
+For example, we can define a template to encapsulate a Kubernetes block of labels:
+```
+{{- define "mychart.labels" }}
+  labels:
+    generator: helm
+    date: {{ now | htmlDate }}
+{{- end }}
+```
+Now we can embed this template inside of our existing ConfigMap, and then include it with the ```template``` action:
+
+```
+{{- define "mychart.labels" }}
+  labels:
+    generator: helm
+    date: {{ now | htmlDate }}
+{{- end }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-configmap
+  {{- template "mychart.labels" }}
+data:
+  myvalue: "Hello World"
+  {{- range $key, $val := .Values.favorite }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end }}
 ```
