@@ -6,3 +6,7 @@ pizzaToppings:
   - cheese
   - peppers
   - onions
+
+
+mysubchhart:
+  val1: "parent pass val 1"

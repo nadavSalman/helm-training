@@ -11,6 +11,7 @@ metadata:
   name: {{ .Release.Name }}-configmap
   {{- template "mychart.labels" . }}
 data:
+  messageFromChild: {{ .Values.message }}
   myvalue: "Hello World"
   {{- $relname := .Release.Name -}}
   {{- with .Values.favorite }}

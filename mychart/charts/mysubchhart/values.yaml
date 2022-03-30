@@ -1,0 +1,6 @@
+
+
+
+exports:
+  data:
+    message: "Secret massage for the parent chart, from mysubchhart."
