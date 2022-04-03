@@ -1,5 +1,31 @@
 
 
+# Helm cli workflow:
+
+
+- ```Development```
+  - ``` 
+    helm template [relase name] [cahert nmae] --debug --dry-run
+    ```
+  - ``` 
+      helm getall [relase name] [cahert nmae]
+      ```
+
+- ```Deployment```
+  - ``` 
+      helm install [relase name] [cahert nmae] -n [name space]
+      ```
+  - ``` 
+      helm upgrade [relase name] [cahert nmae] -n [name space]
+      ```
+  - ``` 
+      helm delete [relase name] [cahert nmae] -n [name space]
+      ```
+ 
+
+
+
+
 ## Values order of specificity:
 --set parameters  >  user-supplied values file  >  parent chart's values.yaml  > values.yaml
 ```
